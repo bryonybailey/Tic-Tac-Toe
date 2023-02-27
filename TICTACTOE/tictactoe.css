@@ -1,0 +1,165 @@
+/* * - Selects all elements. *::before <- Everything before |*::after Everything After */
+*, *::before, *::after{
+    box-sizing: border-box;
+} 
+:root{
+    --cell-size:100px;
+    --mark-size: calc(var(--cell-size) * .9) /* This calculates the size of the cell-size variable and multiplies it by 9 */
+}
+
+body{
+margin: 0;
+}
+
+.board{
+    /* This allows makes the board fill the entire screen. */
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    grid-template-columns: repeat(3, auto);
+    grid-template-rows: repeat(3, auto);
+    align-items: center;  /* This aligns each item in the cells to the center*/
+}
+.cell{
+    border-radius: 20px;
+    width:var(--cell-size);
+    height:var(--cell-size);
+    border: 3px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+/* :first-child - Removes the line from the top of the first row */
+.cell:first-child,
+.cell:nth-child(2),
+.cell:nth-child(3){
+border-top: none;
+}
+/* These two removes the middle left and right border */
+.cell:nth-child(3n + 1){
+    border-left: none;
+}
+
+.cell:nth-child(3n + 3){
+    border-right: none;
+}
+
+/* This removes the bottom border */
+.cell:last-child,
+.cell:nth-child(8),
+.cell:nth-child(7){
+    border-bottom: none;
+}
+
+/* If the cursor hovers over the square that has a circle or x in already the cursor will change */
+.cell.x,
+.cell.circle{
+    cursor: not-allowed;
+}
+.cell.x::before, 
+.cell.x::after,
+.cell.circle::before, 
+.cell.circle::after {
+    background-color: black;
+}
+
+.board.circle .cell:not(.x):not(.circle):hover::before,
+.board.circle .cell:not(.x):not(.circle):hover::after,
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.x .cell:not(.x):not(.circle):hover::after{
+background-color: lightgray;
+}
+
+
+
+
+
+/* This is for the X */
+/* .cell.x{
+    /* font-family: 'Itim', cursive; 
+    
+}
+*/
+
+/* :not() stops the x or the o from going into the space that already has an x or o in. - Only apply the hover effect only on the empty cells. */
+
+.cell.x::before, 
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.x .cell:not(.x):not(.circle):hover::after{ 
+    content: '';
+    position: absolute;
+    border-radius: 20px;
+    /* The width would be 15 times the size of the mark-size variable. */
+    width: calc(var(--mark-size) * .15);
+    height: var(--mark-size);
+    /* background-color: black; */
+}
+.cell.x::before,
+.board.x .cell:hover::before,
+.board.x .cell:hover::after{
+    transform: rotate(45deg);
+}
+.cell.x::after,
+.board.x .cell:hover::after{
+    transform: rotate(-45deg);
+
+}
+.cell.circle::before, 
+.cell.circle::after,
+.board.circle .cell:not(.x):not(.circle):hover::before,
+.board.circle .cell:not(.x):not(.circle):hover::after{ 
+    content: '';
+    position: absolute;
+    border-radius: 50px;
+    /* The width would be 15 times the size of the mark-size variable. */
+    border-radius: 50%;
+}
+.cell.circle::before,
+.board.circle .cell:not(.x):not(.circle):hover::before{
+    width: var(--mark-size);
+    height: var(--mark-size);
+    /* background-color: black; */
+}
+
+.cell.circle::after,
+.board.circle .cell:not(.x):not(.circle):hover::after
+{
+    width: calc(var(--mark-size) * .7);
+    height: calc(var(--mark-size) * .7);
+    background-color: white;
+}
+.winning-message {
+display: none;
+position: fixed;
+top:0;
+left:0;
+right: 0;
+bottom: 0;
+background-color: rgba(0, 0, 0, 0.9);
+justify-content: center;
+align-items: center;
+color:white;
+font-family: 'Itim', cursive; 
+font-size: 5rem;
+flex-direction: column;
+}
+.winning-message button{
+font-size: 3rem;
+background-color:white;
+border-radius: 22px;
+cursor: pointer;
+padding: .15em .3em;
+}
+.winning-message button:hover{
+background-color: black;
+border: 3px solid red;
+color: white;
+}
+.winning-message.show{
+    display: flex;
+}
+
